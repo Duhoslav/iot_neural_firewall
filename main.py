@@ -29,7 +29,6 @@ def parse_args(argv, expected):
     if err != 0:
         print(help_text)
         exit(1)
-    # return expected
 
 
 if __name__ == '__main__':
@@ -42,7 +41,7 @@ if __name__ == '__main__':
     remote = Sender(0, 10, 0)
     ticks = expected["ticks"]
     while ticks:
-        res = remote.send_legal((not expected["--illegal"]))
+        res = remote.send_legal(not expected["--illegal"])
         print(res)
         ticks -= 1
     remote.send_disconnect()

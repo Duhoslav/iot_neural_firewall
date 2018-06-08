@@ -6,24 +6,17 @@ from keras.models import Model
 
 
 def create_neural():
-    # размер кодированного представления
     encoding_dim = 10
-    # размер
     input_dim = 19
-
-    # Энкодер
-    # Входной плейсхолдер
     input = Input(shape=(input_dim,))
     # encoded is a encoded representation of the input
     encoded = Dense(encoding_dim, activation='relu')(input)
     # decoded is the lossy reconstruction of the input
     decoded = Dense(input_dim, activation='sigmoid')(encoded)
-
     # this model maps an input to its reconstruction
     autoencoder = Model(input, decoded)
     # this model maps an input to  its encoded representation
     encoder = Model(input, encoded)
-
     # create a placeholder for a encoded (32-dimension) input
     encoded_input = Input(shape=(encoding_dim,))
     # retrieve the last layer of the autoencoder model
@@ -34,13 +27,11 @@ def create_neural():
 
 
 encoder, decoder, autoencoder = create_neural()
-from keras import metrics
 
 autoencoder.compile(optimizer='SGD', loss='mean_squared_error', metrics=['accuracy'])
 
 p = pcap.PcapParser("/home/duhoslav/Documents/iot_firewall/dump1000.pcap")
 digitized = p.parse()
-# print digitized
 np_set = numpy.array(digitized)
 
 
@@ -48,13 +39,12 @@ p = pcap.PcapParser("/home/duhoslav/Documents/iot_firewall/dump.pcap")
 x_test = p.parse()
 x_test = numpy.array(x_test)
 
-
 autoencoder.fit(np_set, np_set,
                 epochs=10,
                 batch_size=32,
                 validation_data=(x_test, x_test))
 
-# check illegal; example: "/home/duhoslav/Documents/iot_firewall/illegal10.pcap"
+# check illegal; example: "/home/.../illegal10.pcap"
 while True:
     filename = raw_input("Please, enter path to file with illegal traffic (pcap, cap) or 'q' to quit \n")
     if filename == 'q':

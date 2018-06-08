@@ -52,19 +52,18 @@ class PcapParser:
                         t_dport = tcp.dport
                         t_first = False
                     digitized_packet.append(0)
-                    # Для корректной работы нужно представить длину данных в двоичном виде. Максимально 16 байт (т.к. макс. длина пакета 65 535)
+                    # Need to normalize binary_data_len. Max size 16 bytes (65 535)
                     binary_data_len = "{0:b}".format(len(tcp.data))
                     if len(binary_data_len) < MAX_PACKET_SIZE:
                         binary_data_len = (MAX_PACKET_SIZE - len(binary_data_len)) * '0' + binary_data_len
                     digitized_packet += [int(l) for l in binary_data_len]
-                    # Если пакет отправлен на устройство, то 0, иначе 1
+                    # To device: 0, else: 1
                     if tcp.dport == t_dport:
                         if direction == 1:
                             direction = 0
                             seq_num = 0
                         else:
                             seq_num += 1
-                            # digitized_packet.append(direction)
                     else:
                         if direction == 0:
                             direction = 1
@@ -79,7 +78,7 @@ class PcapParser:
                         u_dport = udp.dport
                         u_first = False
                     digitized_packet.append(1)
-                    # Для корректной работы нужно представить длину данных в двоичном виде. Максимально 16 байт (т.к. макс. длина пакета 65 535)
+                    # Need to normalize binary_data_len. Max size 16 bytes (65 535)
                     binary_data_len = "{0:b}".format(len(udp.data))
                     if len(udp.data)==32 and udp.dport != u_dport:
                         self.illegal_packets.append(len(self.digitized_packets))
@@ -100,11 +99,10 @@ class PcapParser:
                             seq_num += 1
                     digitized_packet.append(direction)
                     digitized_packet.append(self.__is_word(udp.data))
-                # Для корректной работы нужно представить seq_num в двоичном виде. Будем считать, что это число от 0 до 126, т.е. 7 байт.
+                # Need to normalize seq_num [0;126] - 7 bytes.
                 binary_seq_num = "{0:b}".format(seq_num)
                 if len(binary_seq_num) < MAX_SEQ_SIZE:
                     binary_seq_num = (MAX_SEQ_SIZE - len(binary_seq_num)) * '0' + binary_seq_num
                 digitized_packet += [int(l) for l in binary_seq_num]
-                # print digitized_packet
                 self.digitized_packets.append(digitized_packet)
         return self.digitized_packets

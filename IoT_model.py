@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Сторонние библиотеки
+# libraries
 from threading import Thread
 import types
 import IoT_tasks
 from IoT_tasks import get_random_document, display_book, update_connection, run_illegal
 import json
-# Вспомогательные модули
+# additional modules
 from server.udp import UDPServer
 from server.tcp import TCPServer
 
@@ -60,7 +60,7 @@ def tcp_data_handler(data):
 
 
 def udp_server(flag):
-    # данные сервера
+    # server endpoint
     host = 'localhost'
     port = 63000
     addr = (host, port)
