@@ -30,12 +30,12 @@ encoder, decoder, autoencoder = create_neural()
 
 autoencoder.compile(optimizer='SGD', loss='mean_squared_error', metrics=['accuracy'])
 
-p = pcap.PcapParser("/home/duhoslav/Documents/iot_firewall/dump1000.pcap")
+p = pcap.PcapParser("../assets/dump/dump1000.pcap")
 digitized = p.parse()
 np_set = numpy.array(digitized)
 
 
-p = pcap.PcapParser("/home/duhoslav/Documents/iot_firewall/dump.pcap")
+p = pcap.PcapParser("../assets/dump/dump.pcap")
 x_test = p.parse()
 x_test = numpy.array(x_test)
 
@@ -44,7 +44,7 @@ autoencoder.fit(np_set, np_set,
                 batch_size=32,
                 validation_data=(x_test, x_test))
 
-# check illegal; example: "/home/.../illegal10.pcap"
+# check illegal; example: "../assets/dump/illegal10.pcap"
 while True:
     filename = raw_input("Please, enter path to file with illegal traffic (pcap, cap) or 'q' to quit \n")
     if filename == 'q':

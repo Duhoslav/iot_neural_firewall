@@ -9,12 +9,12 @@ class Manager:
             {
                 'id': 0,
                 'name': 'Python book',
-                'file': 'test.txt'
+                'file': 'assets/text_data/test.txt'
             },
             {
                 'id': 1,
-                'name': 'Python book - copy',
-                'file': 'test2.txt'
+                'name': 'Lorem',
+                'file': 'assets/text_data/test2.txt'
             }
         ]
 
